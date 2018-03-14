@@ -21,7 +21,7 @@ var Server = function(args) {
 
 		commander.version('1.0.0');
 		commander.option('-l --log', 'redirect logs to file');
-		commander.option('-p --port <port>', 'listens to specified port', 3000);
+		commander.option('-p --port <port>', 'listens to specified port', 4000);
 		commander.parse(process.argv);
 
 		var args = ['port', 'log'];
@@ -163,7 +163,7 @@ var Server = function(args) {
 		
 
 		app.listen(app.get('port'), function() {
-			console.log("JBN SPY Lamp is running on port " + app.get('port'));
+			console.log("SPY Lamp is running on port " + app.get('port'));
 		});
 
 	};
