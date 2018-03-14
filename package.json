@@ -1,0 +1,21 @@
+{
+  "name": "spylamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "commander": "^2.12.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "rgb-globe-api": "^1.0.4",
+    "yahoo-finance": "^0.3.5",
+    "yow": "^1.0.85"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
