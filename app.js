@@ -12,6 +12,13 @@ var API = require('rgb-globe-api');
 var api = new API({id:'meg'});
 var random = require('yow/random');
 
+var PORT = 4000;
+var CHECK_INTERVAL = 10000; // milliseconds
+var DEMO_DURATION = 2000; 
+var gSleeping = false;
+var gLastRegularMarketPrice = 0;
+var gTimestamp;
+
 var Server = function(args) {
 
 	args = parseArgs();
@@ -21,7 +28,7 @@ var Server = function(args) {
 
 		commander.version('1.0.0');
 		commander.option('-l --log', 'redirect logs to file');
-		commander.option('-p --port <port>', 'listens to specified port', 4000);
+		commander.option('-p --port <port>', 'listens to specified port', PORT);
 		commander.parse(process.argv);
 
 		var args = ['port', 'log'];
@@ -98,82 +105,90 @@ var Server = function(args) {
 	
 	function listen() {
 		
-		app.set('port', (args.port || 3000));
-		app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
-		app.use(bodyParser.json({limit: '50mb'}));
+		app.set('port', (args.port || PORT));
 		app.use(cors());
-		
-		// ----------------------------------------------------------------------------------------------------------------------------
-		// Returnerar alla aktier med aktuell kurs och utfall i % mot köp
-		app.get('/stocks', function (request, response) {
-			
-			_pool.getConnection(function(err, connection) {
-				if (!err) {					
-					console.log("Hämtar alla aktier från DB.");
-					connection.query('SELECT * FROM aktier WHERE såld=0', function(error, rows, fields) {
-						if (!error) {
-							if (rows.length > 0) {
-								var tickerCheckList = [];
-								
-								for (var i = 0; i < rows.length; i++) {
-									tickerCheckList[i] = rows[i].ticker;	
-								};					
-																		
-								yahooFinance.snapshot({
-								  symbols: tickerCheckList,
-								  fields: ['l1', 'm3', 'm4']
-								}, function (err, snapshot) {
-									if (err) {
-										console.log(err);	
-										response.status(404).json({error:err});						
-									}
-									else {
-										var percentage;
-										
-										for (var i = 0; i < Object.keys(snapshot).length; i++) {
-											rows[i].senaste = snapshot[i].lastTradePriceOnly;
-											rows[i].sma50 = snapshot[i]['50DayMovingAverage'];
-											rows[i].sma200 = snapshot[i]['200DayMovingAverage'];
-											
-											// Beräkna % med 2 decimaler
-											percentage = (1 - (rows[i].kurs/snapshot[i].lastTradePriceOnly)) * 100;
-											rows[i].utfall = parseFloat(Math.round(percentage * 100) / 100).toFixed(2); 
-										}
-																		
-										response.status(200).json(rows);							
-									}
-								});
-							}
-							else
-								response.status(200).json([]);
-						}
-						else {
-							console.log("SELECT * FROM aktier misslyckades: ", error);
-							response.status(200).json([]);					
-						}	
-						connection.release();
-					});
-				}
-				else {
-					console.log("Kunde inte skapa en connection: ", err);
-					response.status(200).json([]);					
-				}				
-			});					
-		})
-		
-
 		app.listen(app.get('port'), function() {
 			console.log("SPY Lamp is running on port " + app.get('port'));
 		});
 
-	};
+	}
 	
-	function doSomeWork(percentage) {
+	
+	function isNumeric(num) {
+		return !isNaN(num);
+	}
+	
+
+	function fireworks() {
+				
+		return new Promise((resolve, reject) => {
+			Promise.resolve().then(() => {
+				return api.random({duration:10000, priority:'!'});
+			})
+			.then(() => {
+				resolve();
+			})
+	
+			.catch((error) => {
+			    console.log(error);
+			    reject(error);
+			});
+		});											
+	}	
+	
+	
+	function startupSequence() {
+				
+		return new Promise((resolve, reject) => {
+			Promise.resolve().then(() => {
+				RGB = "rgb(131, 21, 11)";
+				return api.color({color:RGB, duration:DEMO_DURATION});
+			})
+			.then(() => {
+				RGB = "rgb(165, 24, 12)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(197, 27, 12)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(230, 31, 7)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(255, 33, 4)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(255, 82, 70)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(255, 121, 111)"; 
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				resolve();
+			})
+	
+			.catch((error) => {
+			    console.log(error);
+			    reject(error);
+			});
+		});											
+	}
+	
+	function displayColor(percentage) {
 		return new Promise((resolve, reject) => {
 			Promise.resolve().then(() => {
 				var RGB;
 				
 				switch (true) {
+					case (gSleeping): // Kallt blå när vi sover
+					RGB = "rgb(0, 0, 50)"; 
+					break;
+										
 					// Negative
 					case (percentage < -0.9):
 					RGB = "rgb(131, 21, 11)"; 
@@ -279,8 +294,6 @@ var Server = function(args) {
 				}
 
 			    return api.color({color:RGB, duration:-1, priority:'!'});				
-//			    return api.color({color:sprintf("rgb(%d, %d, %d)", R, G, B), duration:-1, priority:'!'});
-			    //color:sprintf(’rgb(%d, %d, %d)’, 4, 5, 6)
 			})
 			.then(() => {
 				resolve();
@@ -318,32 +331,54 @@ var Server = function(args) {
 
 			getYahooQuote({symbol:'SPY', modules:['price']}).then(function(snapshot) {
 				console.log("quote", snapshot.price.regularMarketPrice);
+								
+				if (!isNaN(snapshot.price.regularMarketPrice)) {
+									
+					// Kolla om vi ska sova (SPY stängd)
+					if (gLastRegularMarketPrice == snapshot.price.regularMarketPrice) {
+						if (Date.now() - gTimestamp > (1000*60*10)) { // Samma kurs i 10 minuter, börsen stängd
+							gSleeping = true;	
+							console.log("ZZzzzzzz.....");
+						}
+					}
+					else {
+						if (gSleeping) {
+							console.log("Wake up!");
+							fireworks();						
+						}
+							
+						gLastRegularMarketPrice = snapshot.price.regularMarketPrice;
+						gTimestamp = Date.now();
+						gSleeping = false;					
+					}
+					
+					percentage = (1 - (previousClose/snapshot.price.regularMarketPrice)) * 100;
+					percentage = parseFloat(Math.round(percentage * 100) / 100).toFixed(2); 
+	
+					console.log("percentage", percentage);
+	
+					displayColor(percentage).then(function() {
+						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+					})
+					.catch(function(error) {
+						console.log("Fel: ", error);
+						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+					});
+				}
+				else
+					setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 
-				percentage = (1 - (previousClose/snapshot.price.regularMarketPrice)) * 100;
-				percentage = parseFloat(Math.round(percentage * 100) / 100).toFixed(2); 
-
-				console.log("percentage", percentage);
-
-				doSomeWork(percentage).then(function() {
-					setTimeout(loopAndDisplaySPY, 10000);
-				})
-		
-				.catch(function(error) {
-					console.log("Fel: ", error);
-		
-					// Och börja om igen
-					setTimeout(loopAndDisplaySPY, 10000);
-				});
 			})
 			.catch(function(error) {
 				console.log("Error loopAndDisplaySPY:getYahooQuote", error);
+				setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 			});		
 				
 			
 		})
 		.catch(function(error) {
 			console.log("Error loopAndDisplaySPY:getYahooHistorical", error);
-			setTimeout(loopAndDisplaySPY, 10000);
+			setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 		});		
 
 
@@ -356,8 +391,13 @@ var Server = function(args) {
 	}
 	
 	listen();	
-
-	loopAndDisplaySPY();
+	
+	//setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+	
+	startupSequence().then(function() {
+		loopAndDisplaySPY();
+	});
+		
 }
 
 module.exports = new Server();
