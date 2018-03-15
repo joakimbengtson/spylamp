@@ -312,14 +312,15 @@ var Server = function(args) {
 		var i = 0;
 		var previousClose = -1;
 		
-		var yesterday = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24)));
+		//var yesterday = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24)));
+		var today = getFormattedDate(new Date(+new Date));
 		var sevendaysago = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24 * 5)));
 
-		console.log("yesterday=", yesterday);
+		console.log("today=", today);
 		console.log("sevendaysago=", sevendaysago);
 		
-		getYahooHistorical({symbol:'SPY', from:sevendaysago, to:yesterday}).then(function(snapshot) {
-			
+		getYahooHistorical({symbol:'SPY', from:sevendaysago, to:today}).then(function(snapshot) {
+			console.log(snapshot);
 			do {
 				if (typeof(snapshot[i]) != "undefined")
 					previousClose = snapshot[i].close;
