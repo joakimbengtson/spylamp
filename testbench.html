@@ -1,0 +1,67 @@
+<HTML>
+
+<script type="text/javascript">
+//var API = require('rgb-globe-api');
+
+function showColor(val, divven)
+{
+	divven.style.backgroundColor = "rgb(" + val + ")";
+	
+	var xhr = new XMLHttpRequest();
+	var url = 'http://app-o.se/service/neopixels.meg/color?color='+'rgb(' + val + ')'+'&duration=-1';
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.send("");	
+				
+}
+	
+	
+
+</script>
+
+<HEAD>
+
+<TITLE>Testa färger</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="FFFFFF">
+<p>
+	"rgb(255, 230, 230)", // reds
+	"rgb(255, 204, 204)",
+	"rgb(255, 179, 179)",
+	"rgb(255, 153, 153)", 
+	"rgb(255, 128, 128)",
+	"rgb(255, 102, 102)", 
+	"rgb(255, 77, 77)", 
+	"rgb(255, 51, 51)", 
+	"rgb(255, 26, 26)",
+	"rgb(255, 0, 0)",
+	"rgb(230, 0, 0)", // 11	
+</p>
+
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+<DIV id="jbn" style="background-color:red"><input type="text" name="color1"><button type="button" onclick="showColor(document.activeElement.parentElement.firstChild.value
+, document.activeElement.parentElement)">Visa</button></DIV>
+
+
+</BODY>
+
+</HTML>

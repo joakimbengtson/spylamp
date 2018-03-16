@@ -14,10 +14,40 @@ var random = require('yow/random');
 
 var PORT = 4000;
 var CHECK_INTERVAL = 10000; // milliseconds
-var DEMO_DURATION = 2000; 
+var DEMO_DURATION = 1000; 
 var gSleeping = false;
 var gLastRegularMarketPrice = 0;
 var gTimestamp;
+
+var COLORS = [
+	"rgb(0, 0, 50)", // sleeping
+	
+	// reds
+	"rgb(255, 170, 170)", // 1
+	"rgb(255, 160, 160)",
+	"rgb(240, 140, 140)",
+	"rgb(255, 130, 130)", 
+	"rgb(255, 110, 110)",
+	"rgb(255, 90, 90)", 
+	"rgb(255, 70, 70)", 
+	"rgb(255, 51, 51)", 
+	"rgb(255, 40, 40)",
+	"rgb(255, 0, 0)", // 10
+		
+	"rgb(209,202,245)", // neutral
+	
+	// greens
+	"rgb(0, 255, 0)", // 12
+	"rgb(0, 240, 0)",
+	"rgb(0, 230, 0)",
+	"rgb(40, 220, 40)",
+	"rgb(80, 220, 80)",
+	"rgb(70, 240, 70)",
+	"rgb(90, 240, 90)",
+	"rgb(90, 250, 90)",
+	"rgb(110, 250, 110)",
+	"rgb(120, 252, 120)" // 21
+];
 
 var Server = function(args) {
 
@@ -136,7 +166,87 @@ var Server = function(args) {
 		});											
 	}	
 	
+	function startupSequence() {
+						
+		return new Promise((resolve, reject) => {
+			Promise.resolve().then(() => {
+				return api.color({color:COLORS[10], duration:DEMO_DURATION});
+			})
+			.then(() => {
+				return api.color({color:COLORS[9], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[8], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[7], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[6], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[5], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[4], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[3], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[2], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[1], duration:DEMO_DURATION});			
+			})				
+			
+			.then(() => {
+				return api.color({color:COLORS[11], duration:DEMO_DURATION}); // neutral
+			})	
+						
+			.then(() => {
+				return api.color({color:COLORS[21], duration:DEMO_DURATION});
+			})				
+			.then(() => {
+				return api.color({color:COLORS[20], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[19], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[18], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[17], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[16], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[15], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[14], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[13], duration:DEMO_DURATION});			
+			})				
+			.then(() => {
+				return api.color({color:COLORS[12], duration:DEMO_DURATION});			
+			})				
+
+			.then(() => {
+				resolve();
+			})
+			.catch((error) => {
+			    console.log(error);
+			    reject(error);
+			});
+		});											
+	}
 	
+	
+	/*
 	function startupSequence() {
 				
 		return new Promise((resolve, reject) => {
@@ -169,131 +279,184 @@ var Server = function(args) {
 				return api.color({color:RGB, duration:DEMO_DURATION});			
 			})
 			.then(() => {
+				RGB = "rgb(255, 155, 149)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(255, 196, 192)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(255, 235, 234)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			
+			.then(() => {
+				// Neutral
+				RGB = "rgb(229, 232, 255)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			
+			.then(() => {
+				RGB = "rgb(0, 255, 0)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(0, 139, 35)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(0, 161, 57)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(37, 171, 72)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(112, 202, 111)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(142, 212, 134)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(86, 202, 101)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(115, 215, 118)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(152, 222, 145)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(163, 229, 166)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(195, 240, 192)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
+				RGB = "rgb(226, 246, 226)";
+				return api.color({color:RGB, duration:DEMO_DURATION});			
+			})
+			.then(() => {
 				resolve();
 			})
-	
 			.catch((error) => {
 			    console.log(error);
 			    reject(error);
 			});
 		});											
 	}
-	
+	*/
 	function displayColor(percentage) {
 		return new Promise((resolve, reject) => {
 			Promise.resolve().then(() => {
-				var RGB;
+				var rgbIndex = 0;
 				
 				switch (true) {
 					case (gSleeping): // Kallt blå när vi sover
-					RGB = "rgb(0, 0, 50)"; 
+					rgbIndex = 0; 
 					break;
 										
 					// Negative
 					case (percentage < -0.9):
-					RGB = "rgb(131, 21, 11)"; 
+					rgbIndex = 10; 
 					break;
 
 					case (percentage < -0.8):
-					RGB = "rgb(165, 24, 12)"; 
+					rgbIndex = 9; 
 					break;
 
 					case (percentage < -0.7):
-					RGB = "rgb(197, 27, 12)"; 
+					rgbIndex = 8; 
 					break;
 
 					case (percentage < -0.6):
-					RGB = "rgb(230, 31, 7)"; 
+					rgbIndex = 7; 
 					break;
 
 					case (percentage < -0.5):
-					RGB = "rgb(255, 33, 4)"; 
+					rgbIndex = 6; 
 					break;
 
 					case (percentage < -0.4):
-					RGB = "rgb(255, 82, 70)"; 
+					rgbIndex = 5; 
 					break;
 					
 					case (percentage < -0.3):
-					RGB = "rgb(255, 121, 111)"; 
+					rgbIndex = 4; 
 					break;
 					
 					case (percentage < -0.2):
-					RGB = "rgb(255, 155, 149)";
+					rgbIndex = 3; 
 					break;
 					
 					case (percentage < -0.1):
-					RGB = "rgb(255, 196, 192)";
+					rgbIndex = 2; 
 					break;
 					
 					case (percentage < 0):
-					RGB = "rgb(255, 235, 234)";
+					rgbIndex = 1; 
 					break;
 
 					
 					// Neutral
 					case (percentage == 0):
-					RGB = "rgb(229, 232, 255)";
+					rgbIndex = 11; 
 					break;					
 					
 					
 					// Positive
-					case (percentage > 1.2):
-					RGB = "rgb(0, 255, 0)";
-					break;
-
-					case (percentage > 1.1):
-					RGB = "rgb(0, 139, 35)";
-					break;
-
-					case (percentage > 1):
-					RGB = "rgb(0, 161, 57)";
-					break;
-
 					case (percentage > 0.9):
-					RGB = "rgb(37, 171, 72)";
+					rgbIndex = 12; 
 					break;
 
 					case (percentage > 0.8):
-					RGB = "rgb(37, 171, 72)";
+					rgbIndex = 13; 
 					break;
 
 					case (percentage > 0.7):
-					RGB = "rgb(112, 202, 111)";
+					rgbIndex = 14; 
 					break;
 
 					case (percentage > 0.6):
-					RGB = "rgb(142, 212, 134)";
+					rgbIndex = 15; 
 					break;
 
 					case (percentage > 0.5):
-					RGB = "rgb(86, 202, 101)";
+					rgbIndex = 16; 
 					break;
 
 					case (percentage > 0.4):
-					RGB = "rgb(115, 215, 118)";
+					rgbIndex = 17; 
 					break;
-					
+
 					case (percentage > 0.3):
-					RGB = "rgb(152, 222, 145)";
+					rgbIndex = 18; 
 					break;
-					
+
 					case (percentage > 0.2):
-					RGB = "rgb(163, 229, 166)";
+					rgbIndex = 19; 
+					break;
+
+					case (percentage > 0.1):
+					rgbIndex = 20; 
 					break;
 					
-					case (percentage > 0.1):
-					RGB = "rgb(195, 240, 192)";
-					break;
-
 					case (percentage > 0):
-					RGB = "rgb(226, 246, 226)";
+					rgbIndex = 21; 
 					break;
-
 										
 				}
 
-			    return api.color({color:RGB, duration:-1, priority:'!'});				
+			    return api.color({color:COLORS[rgbIndex], duration:-1});				
 			})
 			.then(() => {
 				resolve();
@@ -320,7 +483,7 @@ var Server = function(args) {
 		console.log("sevendaysago=", sevendaysago);
 		
 		getYahooHistorical({symbol:'SPY', from:sevendaysago, to:today}).then(function(snapshot) {
-			console.log(snapshot);
+
 			do {
 				if (typeof(snapshot[i]) != "undefined")
 					previousClose = snapshot[i].close;
