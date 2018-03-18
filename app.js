@@ -497,9 +497,12 @@ var Server = function(args) {
 				console.log("quote", snapshot.price.regularMarketPrice);
 								
 				if (!isNaN(snapshot.price.regularMarketPrice)) {
-									
+					
+					if (snapshot.price.regularMarketPrice == 0) {
+						gSleeping = true;	
+					}			
 					// Kolla om vi ska sova (SPY stängd)
-					if (gLastRegularMarketPrice == snapshot.price.regularMarketPrice) {
+					else if (gLastRegularMarketPrice == snapshot.price.regularMarketPrice) {
 						if (Date.now() - gTimestamp > (1000*60*10)) { // Samma kurs i 10 minuter, börsen stängd
 							gSleeping = true;	
 							console.log("ZZzzzzzz.....");
@@ -524,6 +527,7 @@ var Server = function(args) {
 					displayColor(percentage).then(function() {
 						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					})
+					
 					.catch(function(error) {
 						console.log("Fel: ", error);
 						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
