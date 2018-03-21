@@ -118,12 +118,15 @@ var Server = function(args) {
 			yahoo.quote(options, function (error, snapshot) {
 
 				try {					
-					if (error)
-						reject(error);
+					if (error) {
+						console.log("error i getyahooquote");
+						reject(error);						
+					}
 					else
 						resolve(snapshot);
 				}
 				catch (error) {
+					console.log("error i getyahooquote");
 					reject(error);
 				}
 						
@@ -246,115 +249,6 @@ var Server = function(args) {
 	}
 	
 	
-	/*
-	function startupSequence() {
-				
-		return new Promise((resolve, reject) => {
-			Promise.resolve().then(() => {
-				RGB = "rgb(131, 21, 11)";
-				return api.color({color:RGB, duration:DEMO_DURATION});
-			})
-			.then(() => {
-				RGB = "rgb(165, 24, 12)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(197, 27, 12)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(230, 31, 7)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 33, 4)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 82, 70)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 121, 111)"; 
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 155, 149)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 196, 192)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(255, 235, 234)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			
-			.then(() => {
-				// Neutral
-				RGB = "rgb(229, 232, 255)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			
-			.then(() => {
-				RGB = "rgb(0, 255, 0)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(0, 139, 35)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(0, 161, 57)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(37, 171, 72)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(112, 202, 111)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(142, 212, 134)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(86, 202, 101)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(115, 215, 118)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(152, 222, 145)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(163, 229, 166)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(195, 240, 192)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				RGB = "rgb(226, 246, 226)";
-				return api.color({color:RGB, duration:DEMO_DURATION});			
-			})
-			.then(() => {
-				resolve();
-			})
-			.catch((error) => {
-			    console.log(error);
-			    reject(error);
-			});
-		});											
-	}
-	*/
 	function displayColor(percentage) {
 		return new Promise((resolve, reject) => {
 			Promise.resolve().then(() => {
