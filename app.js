@@ -18,6 +18,7 @@ var DEMO_DURATION = 1000;
 var gSleeping = false;
 var gLastRegularMarketPrice = 0;
 var gTimestamp;
+var id;
 
 var COLORS = [
 	"rgb(0, 0, 50)", // sleeping
@@ -419,28 +420,34 @@ var Server = function(args) {
 					console.log("percentage", percentage);
 	
 					displayColor(percentage).then(function() {
-						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+						if (id) { clearTimeout(id); }
+						id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					})
 					
 					.catch(function(error) {
 						console.log("Fel: ", error);
-						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+						if (id) { clearTimeout(id); }
+						id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					});
 				}
-				else
-					setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+				else {
+					if (id) { clearTimeout(id); }
+					id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);	
+				}
 
 			})
 			.catch(function(error) {
 				console.log("Error loopAndDisplaySPY:getYahooQuote", error);
-				setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+				if (id) { clearTimeout(id); }
+				id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 			});		
 				
 			
 		})
 		.catch(function(error) {
 			console.log("Error loopAndDisplaySPY:getYahooHistorical", error);
-			setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+			if (id) { clearTimeout(id); }
+			id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 		});		
 
 
