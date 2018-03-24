@@ -18,7 +18,6 @@ var DEMO_DURATION = 1000;
 var gSleeping = false;
 var gLastRegularMarketPrice = 0;
 var gTimestamp;
-var id;
 
 var COLORS = [
 	"rgb(0, 0, 50)", // sleeping
@@ -96,12 +95,15 @@ var Server = function(args) {
 			yahoo.historical(options, function (error, quotes) {
 
 				try {					
-					if (error)
-						reject(error);
+					if (error) {
+						console.log("error i getyahoohistorical");						
+						reject(error);						
+					}
 					else
 						resolve(quotes);
 				}
 				catch (error) {
+					console.log("error i getyahoohistorical");						
 					reject(error);
 				}
 						
@@ -357,6 +359,7 @@ var Server = function(args) {
 				resolve();
 			})
 			.catch((error) => {
+				console.log("error:", error);
 				reject(error);
 			});
 			
@@ -420,34 +423,29 @@ var Server = function(args) {
 					console.log("percentage", percentage);
 	
 					displayColor(percentage).then(function() {
-						if (id) { clearTimeout(id); }
-						id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					})
 					
 					.catch(function(error) {
 						console.log("Fel: ", error);
-						if (id) { clearTimeout(id); }
-						id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					});
 				}
 				else {
-					if (id) { clearTimeout(id); }
-					id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);	
+					setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);	
 				}
 
 			})
 			.catch(function(error) {
 				console.log("Error loopAndDisplaySPY:getYahooQuote", error);
-				if (id) { clearTimeout(id); }
-				id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+				setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 			});		
 				
 			
 		})
 		.catch(function(error) {
 			console.log("Error loopAndDisplaySPY:getYahooHistorical", error);
-			if (id) { clearTimeout(id); }
-			id = setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+			setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 		});		
 
 
