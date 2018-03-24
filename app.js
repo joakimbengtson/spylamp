@@ -420,32 +420,25 @@ var Server = function(args) {
 					percentage = (1 - (previousClose/snapshot.price.regularMarketPrice)) * 100;
 					percentage = parseFloat(Math.round(percentage * 100) / 100).toFixed(2); 
 	
-					console.log("percentage", percentage);
 	
 					displayColor(percentage).then(function() {
-						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
+						console.log("percentage", percentage);
 					})
 					
 					.catch(function(error) {
 						console.log("Fel: ", error);
-						setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 					});
-				}
-				else {
-					setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);	
 				}
 
 			})
 			.catch(function(error) {
 				console.log("Error loopAndDisplaySPY:getYahooQuote", error);
-				setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 			});		
 				
 			
 		})
 		.catch(function(error) {
 			console.log("Error loopAndDisplaySPY:getYahooHistorical", error);
-			setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
 		});		
 
 
@@ -458,11 +451,9 @@ var Server = function(args) {
 	}
 	
 	listen();	
-	
-	//setTimeout(loopAndDisplaySPY, CHECK_INTERVAL);
-	
+		
 	startupSequence().then(function() {
-		loopAndDisplaySPY();
+		setInterval(loopAndDisplaySPY, CHECK_INTERVAL);
 	});
 		
 }
