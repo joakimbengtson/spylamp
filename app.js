@@ -13,7 +13,7 @@ var api = new API({id:'meg'});
 var random = require('yow/random');
 
 var PORT = 4000;
-var CHECK_INTERVAL = 10000; // milliseconds
+var CHECK_INTERVAL = 20000; // milliseconds
 var DEMO_DURATION = 1000; 
 var gSleeping = false;
 var gLastRegularMarketPrice = 0;
@@ -144,7 +144,7 @@ var Server = function(args) {
 		app.set('port', (args.port || PORT));
 		app.use(cors());
 		app.listen(app.get('port'), function() {
-			console.log("SPY Lamp is running on port " + app.get('port'));
+			console.log("SPY Lamp is running on port " + app.get('port'), CHECK_INTERVAL);
 		});
 
 	}
@@ -353,13 +353,15 @@ var Server = function(args) {
 										
 				}
 
+				console.log("sätter färg", rgbIndex, COLORS[rgbIndex]);
+				
 			    return api.color({color:COLORS[rgbIndex], duration:-1});				
 			})
 			.then(() => {
 				resolve();
-			})
+			}) 
 			.catch((error) => {
-				console.log("error:", error);
+				console.log("displayColor:", error);
 				reject(error);
 			});
 			
@@ -373,7 +375,6 @@ var Server = function(args) {
 		var i = 0;
 		var previousClose = -1;
 		
-		//var yesterday = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24)));
 		var today = getFormattedDate(new Date(+new Date));
 		var sevendaysago = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24 * 5)));
 
@@ -429,6 +430,8 @@ var Server = function(args) {
 						console.log("Fel: ", error);
 					});
 				}
+				else
+					console.log("regularMarketPrice är inte numeriskt.");
 
 			})
 			.catch(function(error) {
