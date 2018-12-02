@@ -144,7 +144,7 @@ var Server = function(args) {
 		app.set('port', (args.port || PORT));
 		app.use(cors());
 		app.listen(app.get('port'), function() {
-			console.log("SPY Lamp is running on port " + app.get('port'), CHECK_INTERVAL);
+			console.log("JBN: SPY Lamp is running on port " + app.get('port'), CHECK_INTERVAL);
 		});
 
 	}
@@ -166,7 +166,7 @@ var Server = function(args) {
 			})
 	
 			.catch((error) => {
-			    console.log(error);
+			    console.log("Fel i fireworks", error);
 			    reject(error);
 			});
 		});											
@@ -245,7 +245,7 @@ var Server = function(args) {
 				resolve();
 			})
 			.catch((error) => {
-			    console.log(error);
+			    console.log("Fel i startupSequence", error);
 			    reject(error);
 			});
 		});											
@@ -361,7 +361,7 @@ var Server = function(args) {
 				resolve();
 			}) 
 			.catch((error) => {
-				console.log("displayColor:", error);
+				console.log("Fel i displayColor", error);
 				reject(error);
 			});
 			
@@ -427,7 +427,7 @@ var Server = function(args) {
 					})
 					
 					.catch(function(error) {
-						console.log("Fel: ", error);
+						console.log("Fel i loopAndDisplaySPY", error);
 					});
 				}
 				else
