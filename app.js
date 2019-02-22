@@ -18,6 +18,8 @@ var DEMO_DURATION = 1000;
 var gSleeping = false;
 var gLastRegularMarketPrice = 0;
 var gTimestamp;
+var gBusy = false;
+var gVersion = "1.0.2";
 
 var COLORS = [
 	"rgb(0, 0, 50)", // sleeping
@@ -144,7 +146,7 @@ var Server = function(args) {
 		app.set('port', (args.port || PORT));
 		app.use(cors());
 		app.listen(app.get('port'), function() {
-			console.log("JBN: SPY Lamp is running on port " + app.get('port'), CHECK_INTERVAL);
+			console.log("SPY Lamp is running on port " + app.get('port') + " Version: " + gVersion, CHECK_INTERVAL);
 		});
 
 	}
@@ -377,6 +379,13 @@ var Server = function(args) {
 		
 		var today = getFormattedDate(new Date(+new Date));
 		var sevendaysago = getFormattedDate(new Date(+new Date - (1000 * 60 * 60 * 24 * 5)));
+		
+		if (gBusy) {
+			console.log("loopAndDisplaySPY anropad men gBusy är true");
+			return;			
+		}
+
+		gBusy = true;
 
 		console.log("today=", today);
 		console.log("sevendaysago=", sevendaysago);
@@ -424,26 +433,31 @@ var Server = function(args) {
 	
 					displayColor(percentage).then(function() {
 						console.log("percentage", percentage);
+						gBusy = false;
 					})
 					
 					.catch(function(error) {
 						console.log("Fel i loopAndDisplaySPY", error);
+						gBusy = false;
 					});
 				}
-				else
+				else {
 					console.log("regularMarketPrice är inte numeriskt.");
+					gBusy = false;					
+				}
 
 			})
 			.catch(function(error) {
 				console.log("Error loopAndDisplaySPY:getYahooQuote", error);
+				gBusy = false;				
 			});		
 				
 			
 		})
 		.catch(function(error) {
 			console.log("Error loopAndDisplaySPY:getYahooHistorical", error);
+			gBusy = false;			
 		});		
-
 
 	};
 
